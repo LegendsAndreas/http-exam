@@ -16,17 +16,12 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        IHttpServer server = new HttpServer(13000);
+        HttpServer server = new HttpServer(13000);
         server.Start();
     }
 }
 
-public interface IHttpServer
-{
-    void Start();
-}
-
-public class HttpServer : IHttpServer
+public class HttpServer
 {
     private readonly TcpListener listener;
 
@@ -64,8 +59,6 @@ public class HttpServer : IHttpServer
 
                 var httpResponse = GetResponse(method, url);
 
-                // Console.WriteLine("Response message:");
-                // Console.WriteLine(httpResponse);
 
                 stream.Write(Encoding.UTF8.GetBytes(httpResponse));
                 stream.Flush();
@@ -155,14 +148,14 @@ public class HttpServer : IHttpServer
 
     private string LoadImage1()
     {
-        const string imageFile = "cooper1Pic.jpg";
+        const string imageFile = "cooper2Pic.png";
 
         try
         {
             var img = File.ReadAllBytes(imageFile);
             var imgBase64 = Convert.ToBase64String(img);
 
-            var httpBody = $"<img alt=\"Image\" src=\"data:image/jpg;base64,{imgBase64}\" /></html>";
+            var httpBody = $"<img alt=\"Image\" src=\"data:image/png;base64,{imgBase64}\" /></html>";
 
             return httpBody;
         }
@@ -175,7 +168,7 @@ public class HttpServer : IHttpServer
 
     private string LoadImageResized(int width = 500, int height = 500)
     {
-        const string imageFile = "cooper2Pic.png";
+        const string imageFile = "cooper1Pic.jpg";
         string style = $"style=\"width: {width}; height: {height}px;\"";
 
         try
@@ -183,7 +176,7 @@ public class HttpServer : IHttpServer
             var img = File.ReadAllBytes(imageFile);
             var imgBase64 = Convert.ToBase64String(img);
 
-            var httpBody = $"<img alt=\"Image\" src=\"data:image/png;base64,{imgBase64}\" {style}/></html>";
+            var httpBody = $"<img alt=\"Image\" src=\"data:image/jpg;base64,{imgBase64}\" {style}/></html>";
 
             return httpBody;
         }
@@ -203,8 +196,8 @@ public class HttpServer : IHttpServer
     {
         var match = Regex.Match(url, @"width=(\d+)&height=(\d+)");
 
-        int width = 0;
-        int height = 0;
+        int width;
+        int height;
 
         if (match.Success)
         {
@@ -236,7 +229,12 @@ public class HttpServer : IHttpServer
         }
     }
 
-    // AI
+    /// <summary>
+    /// Resizes an image to the specified width and height and returns it as a Base64-encoded HTML image tag.
+    /// </summary>
+    /// <param name="width">The width to resize the image to.</param>
+    /// <param name="height">The height to resize the image to.</param>
+    /// <returns>An HTML string containing the resized image as a Base64-encoded `src` attribute in an `img` tag.</returns>
     private string ResizeImage(int width, int height)
     {
         try
@@ -247,8 +245,7 @@ public class HttpServer : IHttpServer
             {
                 rescaledImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 var imgBase64 = Convert.ToBase64String(ms.ToArray());
-                var style = $"style=\"width: {width}px; height: {height}px;\"";
-                var httpBody = $"<img alt=\"Image\" src=\"data:image/png;base64,{imgBase64}\" {style}/></html>";
+                var httpBody = $"<img alt=\"Image\" src=\"data:image/png;base64,{imgBase64}\"/></html>";
 
                 return httpBody;
             }
@@ -259,12 +256,12 @@ public class HttpServer : IHttpServer
             return $"<html><h1>Error loading image</h1><p>{ex.Message}</p></html>";
         }
     }
-
+    
     /// <summary>
-    /// Rescales the image, by first resizing the image and then rescaling it.
+    /// Extracts width and height parameters from a URL query string and resizes an image accordingly.
     /// </summary>
-    /// <param name="url"></param>
-    /// <returns></returns>
+    /// <param name="url">The URL containing the width and height parameters.</param>
+    /// <returns>An HTML string containing the resized image if successful, or an HTML error message if not.</returns>
     private string LoadCustomRescaledImage(string url)
     {
         var match = Regex.Match(url, @"width=(\d+)&height=(\d+)");
@@ -281,13 +278,13 @@ public class HttpServer : IHttpServer
             return "<html><h1>Error resolving url</h1></html>";
         }
     }
-
+    
     /// <summary>
-    /// The ACTUAL function that rescales an image.
+    /// Rescales an image to the specified dimensions.
     /// </summary>
-    /// <param name="width"></param>
-    /// <param name="height"></param>
-    /// <returns></returns>
+    /// <param name="width">The new width for the image.</param>
+    /// <param name="height">The new height for the image.</param>
+    /// <returns>A new <see cref="Image"/> object that is the rescaled version of the original image.</returns>
     private static Image RescaleImage(int width, int height)
     {
         Image originalImage = Image.FromFile("cooper1Pic.jpg");

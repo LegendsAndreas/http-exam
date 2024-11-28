@@ -18,3 +18,4 @@ C:\Users\andre\Desktop\Pog grammering\C#\HttpImg\HttpImg\bin\Debug\net8.0\System
 C:\Users\andre\Desktop\Pog grammering\C#\HttpImg\HttpImg\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\andre\Desktop\Pog grammering\C#\HttpImg\HttpImg\obj\Debug\net8.0\HttpImg.csproj.AssemblyReference.cache
 C:\Users\andre\Desktop\Pog grammering\C#\HttpImg\HttpImg\obj\Debug\net8.0\HttpImg.csproj.Up2Date
+C:\Users\andre\Desktop\Pog grammering\C#\HttpImg\HttpImg\obj\Debug\net8.0\HttpImg.sourcelink.json

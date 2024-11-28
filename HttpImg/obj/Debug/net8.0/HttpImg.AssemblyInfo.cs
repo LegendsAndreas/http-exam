@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HttpImg")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03c08b2155f150e2a3d6b0d94b224f7e569a0986")]
 [assembly: System.Reflection.AssemblyProductAttribute("HttpImg")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HttpImg")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
